@@ -13,9 +13,11 @@ class UniteeProduit
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(["getAllUniteeProduit", "getAllProduit"])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(["getAllUniteeProduit", "getAllProduit"])]
     private $nom;
 
     public function getId(): ?int

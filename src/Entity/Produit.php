@@ -15,19 +15,24 @@ class Produit
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(["getAllProduit"])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(["getAllProduit"])]
     private $nom;
 
     #[ORM\Column(type: 'float')]
+    #[Groups(["getAllProduit"])]
     private $prix;
 
     #[ORM\ManyToOne(targetEntity: FamilleProduit::class, inversedBy: 'produits')]
+    #[Groups(["getAllProduit"])]
     private $famille;
 
     #[ORM\ManyToOne(targetEntity: UniteeProduit::class)]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(["getAllProduit"])]
     private $unitee;
 
     #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Production::class)]
@@ -67,24 +72,24 @@ class Produit
         return $this;
     }
 
-    public function getFamille(): ?familleProduit
+    public function getFamille(): ?FamilleProduit
     {
         return $this->famille;
     }
 
-    public function setFamille(?familleProduit $famille): self
+    public function setFamille(?FamilleProduit $famille): self
     {
         $this->famille = $famille;
 
         return $this;
     }
 
-    public function getUnitee(): ?uniteeproduit
+    public function getUnitee(): ?UniteeProduit
     {
         return $this->unitee;
     }
 
-    public function setUnitee(?uniteeproduit $unitee): self
+    public function setUnitee(?UniteeProduit $unitee): self
     {
         $this->unitee = $unitee;
 

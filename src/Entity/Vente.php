@@ -13,12 +13,15 @@ class Vente
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(["getAllVente"])]
     private $id;
 
     #[ORM\Column(type: 'float')]
+    #[Groups(["getAllVente"])]
     private $quantite;
 
     #[ORM\Column(type: 'float')]
+    #[Groups(["getAllVente"])]
     private $prix_unitaire;
 
     #[ORM\ManyToOne(targetEntity: Facture::class, inversedBy: 'ventes')]

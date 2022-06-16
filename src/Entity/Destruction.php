@@ -15,15 +15,19 @@ class Destruction
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(["getAllDestruction"])]
     private $id;
 
     #[ORM\Column(type: 'date')]
+    #[Groups(["getAllDestruction"])]
     private $date_destruction;
 
     #[ORM\Column(type: 'float')]
+    #[Groups(["getAllDestruction"])]
     private $quantite;
 
     #[ORM\Column(type: 'float')]
+    #[Groups(["getAllDestruction"])]
     private $prix_unitaire;
 
     #[ORM\OneToMany(mappedBy: 'destruction', targetEntity: Production::class)]

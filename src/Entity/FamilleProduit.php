@@ -8,16 +8,17 @@ use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 use Doctrine\ORM\Mapping as ORM;
-
 #[ORM\Entity(repositoryClass: FamilleProduitRepository::class)]
 class FamilleProduit
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[Groups(["getAllFamilleProduit", "getAllProduit"])]
     #[ORM\Column(type: 'integer')]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(["getAllFamilleProduit", "getAllProduit"])]
     private $nom;
 
     #[ORM\OneToMany(mappedBy: 'famille', targetEntity: Produit::class)]

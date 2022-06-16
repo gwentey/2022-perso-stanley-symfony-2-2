@@ -15,9 +15,11 @@ class Classe
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(["getAllClasse"])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(["getAllClasse"])]
     private $nom;
 
     #[ORM\OneToMany(mappedBy: 'classe', targetEntity: Production::class, orphanRemoval: true)]

@@ -15,9 +15,11 @@ class TypeTransfert
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(["getAllTypeTransfert"])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(["getAllTypeTransfert"])]
     private $nom;
 
     #[ORM\OneToMany(mappedBy: 'type_transfert', targetEntity: Transfert::class, orphanRemoval: true)]

@@ -15,9 +15,11 @@ class CategorieClient
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(["getAllCategorieClient"])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(["getAllCategorieClient"])]
     private $nom;
 
     #[ORM\OneToMany(mappedBy: 'categorie', targetEntity: Client::class, orphanRemoval: true)]

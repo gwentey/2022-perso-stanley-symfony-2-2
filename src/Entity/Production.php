@@ -15,21 +15,27 @@ class Production
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(["getAllProduction"])]
     private $id;
 
     #[ORM\Column(type: 'float')]
+    #[Groups(["getAllProduction"])]
     private $temperature;
 
     #[ORM\Column(type: 'date')]
+    #[Groups(["getAllProduction"])]
     private $date_fabrication;
 
     #[ORM\Column(type: 'date')]
+    #[Groups(["getAllProduction"])]
     private $date_peremption;
 
     #[ORM\Column(type: 'float')]
+    #[Groups(["getAllProduction"])]
     private $quantite;
 
     #[ORM\Column(type: 'float')]
+    #[Groups(["getAllProduction"])]
     private $conditionnement;
 
     #[ORM\ManyToOne(targetEntity: Professeur::class, inversedBy: 'productions')]

@@ -14,16 +14,20 @@ class Transfert
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[Groups(["getAllTransfert"])]
     #[ORM\Column(type: 'integer')]
     private $id;
 
     #[ORM\Column(type: 'float')]
+    #[Groups(["getAllTransfert"])]
     private $quantite;
 
     #[ORM\Column(type: 'date')]
+    #[Groups(["getAllTransfert"])]
     private $date_transfert;
 
     #[ORM\Column(type: 'float')]
+    #[Groups(["getAllTransfert"])]
     private $prix_unitaire;
 
     #[ORM\ManyToOne(targetEntity: TypeTransfert::class, inversedBy: 'transferts')]

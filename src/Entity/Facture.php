@@ -15,12 +15,15 @@ class Facture
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(["getAllFacture"])]
     private $id;
 
     #[ORM\Column(type: 'date')]
+    #[Groups(["getAllFacture"])]
     private $date_creation;
 
     #[ORM\Column(type: 'date', nullable: true)]
+    #[Groups(["getAllFacture"])]
     private $date_reglement;
 
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'factures')]

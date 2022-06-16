@@ -14,13 +14,16 @@ class Professeur
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[Groups(["getAllProfesseur"])]
     #[ORM\Column(type: 'integer')]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(["getAllProfesseur"])]
     private $nom;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(["getAllProfesseur"])]
     private $prenom;
 
     #[ORM\OneToMany(mappedBy: 'professeur', targetEntity: Production::class, orphanRemoval: true)]

@@ -15,21 +15,27 @@ class Client
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(["getAllClient"])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(["getAllClient"])]
     private $nom;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(["getAllClient"])]
     private $prenom;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups(["getAllClient"])]
     private $ville;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups(["getAllClient"])]
     private $telephone;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups(["getAllClient"])]
     private $mail;
 
     #[ORM\ManyToOne(targetEntity: CategorieClient::class, inversedBy: 'clients')]
