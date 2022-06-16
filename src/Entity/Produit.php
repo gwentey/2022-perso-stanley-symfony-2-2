@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\ProduitRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
@@ -21,10 +23,10 @@ class Produit
     #[ORM\Column(type: 'float')]
     private $prix;
 
-    #[ORM\ManyToOne(targetEntity: familleProduit::class, inversedBy: 'produits')]
+    #[ORM\ManyToOne(targetEntity: FamilleProduit::class, inversedBy: 'produits')]
     private $famille;
 
-    #[ORM\ManyToOne(targetEntity: uniteeproduit::class)]
+    #[ORM\ManyToOne(targetEntity: UniteeProduit::class)]
     #[ORM\JoinColumn(nullable: false)]
     private $unitee;
 

@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\ProductionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProductionRepository::class)]
@@ -30,28 +32,28 @@ class Production
     #[ORM\Column(type: 'float')]
     private $conditionnement;
 
-    #[ORM\ManyToOne(targetEntity: professeur::class, inversedBy: 'productions')]
+    #[ORM\ManyToOne(targetEntity: Professeur::class, inversedBy: 'productions')]
     #[ORM\JoinColumn(nullable: false)]
     private $professeur;
 
-    #[ORM\ManyToOne(targetEntity: atelier::class, inversedBy: 'productions')]
+    #[ORM\ManyToOne(targetEntity: Atelier::class, inversedBy: 'productions')]
     #[ORM\JoinColumn(nullable: false)]
     private $atelier;
 
-    #[ORM\ManyToOne(targetEntity: classe::class, inversedBy: 'productions')]
+    #[ORM\ManyToOne(targetEntity: Classe::class, inversedBy: 'productions')]
     #[ORM\JoinColumn(nullable: false)]
     private $classe;
 
-    #[ORM\ManyToOne(targetEntity: destruction::class, inversedBy: 'productions')]
+    #[ORM\ManyToOne(targetEntity: Destruction::class, inversedBy: 'productions')]
     private $destruction;
 
-    #[ORM\ManyToOne(targetEntity: transfert::class, inversedBy: 'productions')]
+    #[ORM\ManyToOne(targetEntity: Transfert::class, inversedBy: 'productions')]
     private $transfert;
 
     #[ORM\OneToMany(mappedBy: 'production', targetEntity: Vente::class)]
     private $ventes;
 
-    #[ORM\ManyToOne(targetEntity: produit::class, inversedBy: 'productions')]
+    #[ORM\ManyToOne(targetEntity: Produit::class, inversedBy: 'productions')]
     private $produit;
 
     public function __construct()

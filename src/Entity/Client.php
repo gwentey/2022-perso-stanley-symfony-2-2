@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\ClientRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
@@ -30,7 +32,7 @@ class Client
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $mail;
 
-    #[ORM\ManyToOne(targetEntity: categorieclient::class, inversedBy: 'clients')]
+    #[ORM\ManyToOne(targetEntity: CategorieClient::class, inversedBy: 'clients')]
     #[ORM\JoinColumn(nullable: false)]
     private $categorie;
 
@@ -107,12 +109,12 @@ class Client
         return $this;
     }
 
-    public function getCategorie(): ?categorieclient
+    public function getCategorie(): ?CategorieClient
     {
         return $this->categorie;
     }
 
-    public function setCategorie(?categorieclient $categorie): self
+    public function setCategorie(?CategorieClient $categorie): self
     {
         $this->categorie = $categorie;
 

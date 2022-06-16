@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\TransfertRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TransfertRepository::class)]
@@ -24,7 +26,7 @@ class Transfert
     #[ORM\Column(type: 'float')]
     private $prix_unitaire;
 
-    #[ORM\ManyToOne(targetEntity: typetransfert::class, inversedBy: 'transferts')]
+    #[ORM\ManyToOne(targetEntity: TypeTransfert::class, inversedBy: 'transferts')]
     #[ORM\JoinColumn(nullable: false)]
     private $type_transfert;
 

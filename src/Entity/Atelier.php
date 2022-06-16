@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\AtelierRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AtelierRepository::class)]
@@ -13,9 +14,11 @@ class Atelier
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(["getAllAtelier"])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(["getAllAtelier"])]
     private $nom;
 
     #[ORM\OneToMany(mappedBy: 'atelier', targetEntity: Production::class, orphanRemoval: true)]

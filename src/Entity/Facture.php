@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\FactureRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FactureRepository::class)]
@@ -21,7 +23,7 @@ class Facture
     #[ORM\Column(type: 'date', nullable: true)]
     private $date_reglement;
 
-    #[ORM\ManyToOne(targetEntity: client::class, inversedBy: 'factures')]
+    #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'factures')]
     #[ORM\JoinColumn(nullable: false)]
     private $client;
 

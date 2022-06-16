@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\VenteRepository;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: VenteRepository::class)]
@@ -19,10 +21,10 @@ class Vente
     #[ORM\Column(type: 'float')]
     private $prix_unitaire;
 
-    #[ORM\ManyToOne(targetEntity: facture::class, inversedBy: 'ventes')]
+    #[ORM\ManyToOne(targetEntity: Facture::class, inversedBy: 'ventes')]
     private $facture;
 
-    #[ORM\ManyToOne(targetEntity: production::class, inversedBy: 'ventes')]
+    #[ORM\ManyToOne(targetEntity: Production::class, inversedBy: 'ventes')]
     private $production;
 
     public function getId(): ?int
