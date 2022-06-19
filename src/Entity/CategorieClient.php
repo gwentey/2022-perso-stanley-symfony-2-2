@@ -11,7 +11,14 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ApiResource(
-    normalizationContext: ['groups' => ["getAllCategorieClient"]]
+    normalizationContext: ['groups' => ["read:categorieclient:getAllCategorieClient"]],
+    itemOperations: [
+        'put',
+        'delete',
+        'get' => [
+            'normalization_context' => ['groups' => ["read:categorieclient:getAllCategorieClient"]]
+        ]
+    ]
 )]
 #[ORM\Entity(repositoryClass: CategorieClientRepository::class)]
 class CategorieClient
@@ -19,11 +26,11 @@ class CategorieClient
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["getAllCategorieClient"])]
+    #[Groups(["read:categorieclient:getAllCategorieClient"])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["getAllCategorieClient"])]
+    #[Groups(["read:categorieclient:getAllCategorieClient"])]
     private $nom;
 
     #[ORM\OneToMany(mappedBy: 'categorie', targetEntity: Client::class, orphanRemoval: true)]

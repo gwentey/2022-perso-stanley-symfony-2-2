@@ -3,31 +3,42 @@
 namespace App\Entity;
 
 use App\Repository\TransfertRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 use Doctrine\ORM\Mapping as ORM;
 
+#[ApiResource(
+    normalizationContext: ['groups' => ["read:transfert:getAllTransfert"]],
+    itemOperations: [
+        'put',
+        'delete',
+        'get' => [
+            'normalization_context' => ['groups' => ["read:transfert:getAllTransfert"]]
+        ]
+    ]
+)]
 #[ORM\Entity(repositoryClass: TransfertRepository::class)]
 class Transfert
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[Groups(["getAllTransfert"])]
+    #[Groups(["read:transfert:getAllTransfert"])]
     #[ORM\Column(type: 'integer')]
     private $id;
 
     #[ORM\Column(type: 'float')]
-    #[Groups(["getAllTransfert"])]
+    #[Groups(["read:transfert:getAllTransfert"])]
     private $quantite;
 
     #[ORM\Column(type: 'date')]
-    #[Groups(["getAllTransfert"])]
+    #[Groups(["read:transfert:getAllTransfert"])]
     private $date_transfert;
 
     #[ORM\Column(type: 'float')]
-    #[Groups(["getAllTransfert"])]
+    #[Groups(["read:transfert:getAllTransfert"])]
     private $prix_unitaire;
 
     #[ORM\ManyToOne(targetEntity: TypeTransfert::class, inversedBy: 'transferts')]

@@ -3,39 +3,50 @@
 namespace App\Entity;
 
 use App\Repository\ProductionRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 use Doctrine\ORM\Mapping as ORM;
 
+#[ApiResource(
+    normalizationContext: ['groups' => ["read:production:getAllProduction"]],
+    itemOperations: [
+        'put',
+        'delete',
+        'get' => [
+            'normalization_context' => ['groups' => ["read:production:getAllProduction"]]
+        ]
+    ]
+)]
 #[ORM\Entity(repositoryClass: ProductionRepository::class)]
 class Production
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["getAllProduction"])]
+    #[Groups(["read:production:getAllProduction"])]
     private $id;
 
     #[ORM\Column(type: 'float')]
-    #[Groups(["getAllProduction"])]
+    #[Groups(["read:production:getAllProduction"])]
     private $temperature;
 
     #[ORM\Column(type: 'date')]
-    #[Groups(["getAllProduction"])]
+    #[Groups(["read:production:getAllProduction"])]
     private $date_fabrication;
 
     #[ORM\Column(type: 'date')]
-    #[Groups(["getAllProduction"])]
+    #[Groups(["read:production:getAllProduction"])]
     private $date_peremption;
 
     #[ORM\Column(type: 'float')]
-    #[Groups(["getAllProduction"])]
+    #[Groups(["read:production:getAllProduction"])]
     private $quantite;
 
     #[ORM\Column(type: 'float')]
-    #[Groups(["getAllProduction"])]
+    #[Groups(["read:production:getAllProduction"])]
     private $conditionnement;
 
     #[ORM\ManyToOne(targetEntity: Professeur::class, inversedBy: 'productions')]

@@ -3,36 +3,47 @@
 namespace App\Entity;
 
 use App\Repository\ProduitRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 use Doctrine\ORM\Mapping as ORM;
 
+#[ApiResource(
+    normalizationContext: ['groups' => ["read:produit:getAllProduit"]],
+    itemOperations: [
+        'put',
+        'delete',
+        'get' => [
+            'normalization_context' => ['groups' => ["read:produit:getAllProduit"]]
+        ]
+    ]
+)]
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
 class Produit
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["getAllProduit"])]
+    #[Groups(["read:produit:getAllProduit"])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["getAllProduit"])]
+    #[Groups(["read:produit:getAllProduit"])]
     private $nom;
 
     #[ORM\Column(type: 'float')]
-    #[Groups(["getAllProduit"])]
+    #[Groups(["read:produit:getAllProduit"])]
     private $prix;
 
     #[ORM\ManyToOne(targetEntity: FamilleProduit::class, inversedBy: 'produits')]
-    #[Groups(["getAllProduit"])]
+    #[Groups(["read:produit:getAllProduit"])]
     private $famille;
 
     #[ORM\ManyToOne(targetEntity: UniteeProduit::class)]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(["getAllProduit"])]
+    #[Groups(["read:produit:getAllProduit"])]
     private $unitee;
 
     #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Production::class)]

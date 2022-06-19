@@ -3,25 +3,36 @@
 namespace App\Entity;
 
 use App\Repository\VenteRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 use Doctrine\ORM\Mapping as ORM;
 
+#[ApiResource(
+    normalizationContext: ['groups' => ["read:vente:getAllVente"]],
+    itemOperations: [
+        'put',
+        'delete',
+        'get' => [
+            'normalization_context' => ['groups' => ["read:vente:getAllVente"]]
+        ]
+    ]
+)]
 #[ORM\Entity(repositoryClass: VenteRepository::class)]
 class Vente
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["getAllVente"])]
+    #[Groups(["read:vente:getAllVente"])]
     private $id;
 
     #[ORM\Column(type: 'float')]
-    #[Groups(["getAllVente"])]
+    #[Groups(["read:vente:getAllVente"])]
     private $quantite;
 
     #[ORM\Column(type: 'float')]
-    #[Groups(["getAllVente"])]
+    #[Groups(["read:vente:getAllVente"])]
     private $prix_unitaire;
 
     #[ORM\ManyToOne(targetEntity: Facture::class, inversedBy: 'ventes')]

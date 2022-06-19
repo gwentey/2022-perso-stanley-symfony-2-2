@@ -3,31 +3,42 @@
 namespace App\Entity;
 
 use App\Repository\DestructionRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 use Doctrine\ORM\Mapping as ORM;
 
+#[ApiResource(
+    normalizationContext: ['groups' => ["read:destruction:getAllDestruction"]],
+    itemOperations: [
+        'put',
+        'delete',
+        'get' => [
+            'normalization_context' => ['groups' => ["read:destruction:getAllDestruction"]]
+        ]
+    ]
+)]
 #[ORM\Entity(repositoryClass: DestructionRepository::class)]
 class Destruction
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["getAllDestruction"])]
+    #[Groups(["read:destruction:getAllDestruction"])]
     private $id;
 
     #[ORM\Column(type: 'date')]
-    #[Groups(["getAllDestruction"])]
+    #[Groups(["read:destruction:getAllDestruction"])]
     private $date_destruction;
 
     #[ORM\Column(type: 'float')]
-    #[Groups(["getAllDestruction"])]
+    #[Groups(["read:destruction:getAllDestruction"])]
     private $quantite;
 
     #[ORM\Column(type: 'float')]
-    #[Groups(["getAllDestruction"])]
+    #[Groups(["read:destruction:getAllDestruction"])]
     private $prix_unitaire;
 
     #[ORM\OneToMany(mappedBy: 'destruction', targetEntity: Production::class)]

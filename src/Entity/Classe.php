@@ -3,23 +3,34 @@
 namespace App\Entity;
 
 use App\Repository\ClasseRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 use Doctrine\ORM\Mapping as ORM;
 
+#[ApiResource(
+    normalizationContext: ['groups' => ["read:classe:getAllClasse"]],
+    itemOperations: [
+        'put',
+        'delete',
+        'get' => [
+            'normalization_context' => ['groups' => ["read:classe:getAllClasse"]]
+        ]
+    ]
+)]
 #[ORM\Entity(repositoryClass: ClasseRepository::class)]
 class Classe
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["getAllClasse"])]
+    #[Groups(["read:classe:getAllClasse"])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["getAllClasse"])]
+    #[Groups(["read:classe:getAllClasse"])]
     private $nom;
 
     #[ORM\OneToMany(mappedBy: 'classe', targetEntity: Production::class, orphanRemoval: true)]

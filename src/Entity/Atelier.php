@@ -9,18 +9,27 @@ use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ["read:atelier:getAllAtelier"]],
+    itemOperations: [
+        'put',
+        'delete',
+        'get' => [
+            'normalization_context' => ['groups' => ["read:atelier:getAllAtelier"]]
+        ]
+    ]
+)]
 #[ORM\Entity(repositoryClass: AtelierRepository::class)]
 class Atelier
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["getAllAtelier"])]
+    #[Groups(["read:atelier:getAllAtelier"])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["getAllAtelier"])]
+    #[Groups(["read:atelier:getAllAtelier"])]
     private $nom;
 
     #[ORM\OneToMany(mappedBy: 'atelier', targetEntity: Production::class, orphanRemoval: true)]

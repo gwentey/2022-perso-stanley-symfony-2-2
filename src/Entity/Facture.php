@@ -3,27 +3,38 @@
 namespace App\Entity;
 
 use App\Repository\FactureRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 use Doctrine\ORM\Mapping as ORM;
 
+#[ApiResource(
+    normalizationContext: ['groups' => ["read:facture:getAllFacture"]],
+    itemOperations: [
+        'put',
+        'delete',
+        'get' => [
+            'normalization_context' => ['groups' => ["read:facture:getAllFacture"]]
+        ]
+    ]
+)]
 #[ORM\Entity(repositoryClass: FactureRepository::class)]
 class Facture
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["getAllFacture"])]
+    #[Groups(["read:facture:getAllFacture"])]
     private $id;
 
     #[ORM\Column(type: 'date')]
-    #[Groups(["getAllFacture"])]
+    #[Groups(["read:facture:getAllFacture"])]
     private $date_creation;
 
     #[ORM\Column(type: 'date', nullable: true)]
-    #[Groups(["getAllFacture"])]
+    #[Groups(["read:facture:getAllFacture"])]
     private $date_reglement;
 
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'factures')]

@@ -3,23 +3,34 @@
 namespace App\Entity;
 
 use App\Repository\TypeTransfertRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 use Doctrine\ORM\Mapping as ORM;
 
+#[ApiResource(
+    normalizationContext: ['groups' => ["read:transfert:getAllTypeTransfert"]],
+    itemOperations: [
+        'put',
+        'delete',
+        'get' => [
+            'normalization_context' => ['groups' => ["read:transfert:getAllTypeTransfert"]]
+        ]
+    ]
+)]
 #[ORM\Entity(repositoryClass: TypeTransfertRepository::class)]
 class TypeTransfert
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["getAllTypeTransfert"])]
+    #[Groups(["read:transfert:getAllTypeTransfert"])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["getAllTypeTransfert"])]
+    #[Groups(["read:transfert:getAllTypeTransfert"])]
     private $nom;
 
     #[ORM\OneToMany(mappedBy: 'type_transfert', targetEntity: Transfert::class, orphanRemoval: true)]

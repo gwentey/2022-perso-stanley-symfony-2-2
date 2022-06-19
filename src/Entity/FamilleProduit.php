@@ -3,22 +3,34 @@
 namespace App\Entity;
 
 use App\Repository\FamilleProduitRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 use Doctrine\ORM\Mapping as ORM;
+
+#[ApiResource(
+    normalizationContext: ['groups' => ["read:familleproduit:getAllFamilleProduit"]],
+    itemOperations: [
+        'put',
+        'delete',
+        'get' => [
+            'normalization_context' => ['groups' => ["read:familleproduit:getAllFamilleProduit"]]
+        ]
+    ]
+)]
 #[ORM\Entity(repositoryClass: FamilleProduitRepository::class)]
 class FamilleProduit
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[Groups(["getAllFamilleProduit", "getAllProduit"])]
+    #[Groups(["read:familleproduit:getAllFamilleProduit"])]
     #[ORM\Column(type: 'integer')]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["getAllFamilleProduit", "getAllProduit"])]
+    #[Groups(["read:familleproduit:getAllFamilleProduit"])]
     private $nom;
 
     #[ORM\OneToMany(mappedBy: 'famille', targetEntity: Produit::class)]
