@@ -9,6 +9,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ApiResource(
+    attributes: ["security" => "is_granted('ROLE_USER')"],
     normalizationContext: ['groups' => ["read:uniteeProduit:getAllUniteeProduit"]],
     itemOperations: [
         'put',

@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 
 #[ApiResource(
+    attributes: ["security" => "is_granted('ROLE_USER')"],
     normalizationContext: ['groups' => ["read:client:getAllClient"]],
     itemOperations: [
         'put',

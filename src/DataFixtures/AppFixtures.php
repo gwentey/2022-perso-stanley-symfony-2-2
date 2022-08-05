@@ -13,11 +13,20 @@ use App\Entity\Produit;
 use App\Entity\Professeur;
 use App\Entity\TypeTransfert;
 use App\Entity\UniteeProduit;
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+
 
 class AppFixtures extends Fixture
 {
+    private $passwordHasher;
+
+    public function __construct(UserPasswordHasherInterface $passwordHasher)
+    {
+        $this->passwordHasher = $passwordHasher;
+    }
     public function load(ObjectManager $manager): void
     {
         // TABLEAU DE STOCKAGE
@@ -45,7 +54,7 @@ class AppFixtures extends Fixture
             $manager->persist($categorieClient);
         }
 
-        
+
         // Création des moyens de reglement
         $moyensDeReglement = array("Non réglé", "Carte Bancaire", "Chèque", "Espèce");
         foreach ($moyensDeReglement as $moy) {
@@ -166,6 +175,23 @@ class AppFixtures extends Fixture
             array_push($tableauDesProductions, $production);
             $manager->persist($production);
         }
+
+        // Création des utilisateurs
+        $user = new User;
+        $plaintextPassword = "admin";
+        // hash the password (based on the security.yaml config for the $user class)
+        $hashedPassword = $this->passwordHasher->hashPassword(
+            $user,
+            $plaintextPassword
+        );
+
+        $user->setUsername("admin");
+        $user->setNom("Rodrigues");
+        $user->setPrenom("Anthony");
+        $user->setPassword($hashedPassword);
+
+        $manager->persist($user);
+
 
         $manager->flush();
     }

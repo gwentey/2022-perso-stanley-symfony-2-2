@@ -11,6 +11,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ApiResource(
+    attributes: ["security" => "is_granted('ROLE_USER')"],
     normalizationContext: ['groups' => ["read:transfert:getAllTransfert"]],
     itemOperations: [
         'put',
@@ -94,12 +95,12 @@ class Transfert
         return $this;
     }
 
-    public function getTypeTransfert(): ?typetransfert
+    public function getTypeTransfert(): ?TypeTransfert
     {
         return $this->type_transfert;
     }
 
-    public function setTypeTransfert(?typetransfert $type_transfert): self
+    public function setTypeTransfert(?TypeTransfert $type_transfert): self
     {
         $this->type_transfert = $type_transfert;
 

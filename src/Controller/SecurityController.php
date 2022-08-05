@@ -10,21 +10,20 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 
-class LoginController extends AbstractController
+class SecurityController extends AbstractController
 {
-    #[Route('/login', name: 'login')]
+    #[Route('/apip/security', name: 'security')]
     public function index(#[CurrentUser] ?User $user): Response
     {
-
-
         if (null === $user) {
             return $this->json([
                 'message' => 'missing credentials',
             ], Response::HTTP_UNAUTHORIZED);
         }
 
-        return $this->json([
-            'user'  => $user->getUserIdentifier(),
-        ]);
+        return $this->json($user);
     }
+
+    #[Route('/apip/logout', name: 'logout')]
+    public function logout(){}
 }
