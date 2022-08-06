@@ -13,7 +13,7 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 class SecurityController extends AbstractController
 {
     #[Route('/apip/security', name: 'security')]
-    public function index(#[CurrentUser] ?User $user): Response
+    public function security(#[CurrentUser] ?User $user): Response
     {
         if (null === $user) {
             return $this->json([

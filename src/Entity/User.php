@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Action\NotFoundAction;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Controller\MeController;
+use App\Controller\SecurityController;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -14,6 +15,42 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource(
     collectionOperations: [
+        'connexion' => [
+            'path' => '/security',
+            'method' => 'post',
+            'controller' => SecurityController::class,
+            'read' => false,
+            'openapi_context' => [
+                'summary'     => 'Permet de se connecter',
+                'description' => "Permet de se connecter et récupérer le token JWT",
+                'requestBody' => [
+                    'content' => [
+                        'application/json' => [
+                            'schema'  => [
+                                'type'       => 'object',
+                                'properties' =>
+                                [
+                                    'username' => ['type' => 'string'],
+                                    'password' => ['type' => 'string'],
+                                ],
+                            ],
+                            'example' => [
+                                'username' => 'admin',
+                                'password' => 'admin',
+                            ],
+                        ],
+                    ],
+                ],
+                'responses' => [
+                    "201" => [
+                        "description" => "Retourne le token"
+                    ],
+                    "401" => [
+                        "description" => "Identifiant ou mot de passe incorrect"
+                    ]
+                ]
+            ],
+        ],
         'me' => [
             'pagination_enabled' => false,
             'path' => '/me',
@@ -31,7 +68,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         'get' => [
             'normalization_context' => ['groups' => ["read:User"]]
         ],
-        ],
+    ],
 
     normalizationContext: ['groups' => ['read:User']]
 )]
