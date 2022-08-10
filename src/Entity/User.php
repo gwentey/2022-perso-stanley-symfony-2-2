@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Action\NotFoundAction;
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Controller\MajUser;
 use App\Controller\MeController;
 use App\Controller\PasswordChangerController;
 use App\Controller\SecurityController;
@@ -65,6 +66,14 @@ use Symfony\Component\Serializer\Annotation\Groups;
             'path' => '/me/changepassword',
             'method' => 'put',
             'controller' => PasswordChangerController::class,
+            'read' => false,
+            'security' => 'is_granted("ROLE_USER")'
+        ],
+        'majProfil' => [
+            'pagination_enabled' => false,
+            'path' => '/me/majuser',
+            'method' => 'put',
+            'controller' => MajUser::class,
             'read' => false,
             'security' => 'is_granted("ROLE_USER")'
         ],
