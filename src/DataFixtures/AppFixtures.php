@@ -171,6 +171,8 @@ class AppFixtures extends Fixture
             $production->setDatePeremption($datePerm);
             $production->setQuantite(random_int(1, 15));
             $production->setConditionnement(random_int(1, 15));
+            $production->setPrixParPortion(random_int(0, 50) / 2);
+            $production->setCongelation(false);
 
             array_push($tableauDesProductions, $production);
             $manager->persist($production);

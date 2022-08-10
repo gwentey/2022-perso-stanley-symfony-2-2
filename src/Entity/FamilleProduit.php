@@ -26,12 +26,12 @@ class FamilleProduit
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[Groups(["read:familleproduit:getAllFamilleProduit", "read:produit:getAllProduit"])]
+    #[Groups(["read:familleproduit:getAllFamilleProduit", "read:produit:getAllProduit", "read:production:getAllProduction"])]
     #[ORM\Column(type: 'integer')]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["read:familleproduit:getAllFamilleProduit", "read:produit:getAllProduit"])]
+    #[Groups(["read:familleproduit:getAllFamilleProduit", "read:produit:getAllProduit", "read:production:getAllProduction"])]
     private $nom;
 
     #[ORM\OneToMany(mappedBy: 'famille', targetEntity: Produit::class)]

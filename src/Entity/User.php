@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Action\NotFoundAction;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Controller\MeController;
+use App\Controller\PasswordChangerController;
 use App\Controller\SecurityController;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -59,6 +60,14 @@ use Symfony\Component\Serializer\Annotation\Groups;
             'read' => false,
             'security' => 'is_granted("ROLE_USER")'
         ],
+        'changePassword' => [
+            'pagination_enabled' => false,
+            'path' => '/me/changepassword',
+            'method' => 'put',
+            'controller' => PasswordChangerController::class,
+            'read' => false,
+            'security' => 'is_granted("ROLE_USER")'
+        ],
         'get',
         'post'
     ],
@@ -98,6 +107,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     #[Groups(['read:User'])]
     private ?string $prenom = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['read:User'])]
+    private ?string $profile = null;
 
     public function getId(): ?int
     {
@@ -189,6 +202,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPrenom(string $prenom): self
     {
         $this->prenom = $prenom;
+
+        return $this;
+    }
+
+    public function getProfile(): ?string
+    {
+        return $this->profile;
+    }
+
+    public function setProfile(?string $profile): self
+    {
+        $this->profile = $profile;
 
         return $this;
     }

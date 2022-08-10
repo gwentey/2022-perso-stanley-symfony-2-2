@@ -26,11 +26,11 @@ class Atelier
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["read:atelier:getAllAtelier"])]
+    #[Groups(["read:atelier:getAllAtelier", "read:production:getAllProduction"])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["read:atelier:getAllAtelier"])]
+    #[Groups(["read:atelier:getAllAtelier", "read:production:getAllProduction"])]
     private $nom;
 
     #[ORM\OneToMany(mappedBy: 'atelier', targetEntity: Production::class, orphanRemoval: true)]

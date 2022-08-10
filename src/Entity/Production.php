@@ -36,11 +36,11 @@ class Production
 
     #[ORM\Column(type: 'date')]
     #[Groups(["read:production:getAllProduction"])]
-    private $date_fabrication;
+    private $dateFabrication;
 
     #[ORM\Column(type: 'date')]
     #[Groups(["read:production:getAllProduction"])]
-    private $date_peremption;
+    private $datePeremption;
 
     #[ORM\Column(type: 'float')]
     #[Groups(["read:production:getAllProduction"])]
@@ -50,33 +50,47 @@ class Production
     #[Groups(["read:production:getAllProduction"])]
     private $conditionnement;
 
+    #[ORM\Column]
+    #[Groups(["read:production:getAllProduction"])]
+    private ?float $prixParPortion = null;
+
     #[ORM\ManyToOne(targetEntity: Professeur::class, inversedBy: 'productions')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(["read:production:getAllProduction"])]
     private $professeur;
 
     #[ORM\ManyToOne(targetEntity: Atelier::class, inversedBy: 'productions')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(["read:production:getAllProduction"])]
     private $atelier;
 
     #[ORM\ManyToOne(targetEntity: Classe::class, inversedBy: 'productions')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(["read:production:getAllProduction"])]
     private $classe;
-
-    #[ORM\ManyToOne(targetEntity: Destruction::class, inversedBy: 'productions')]
-    private $destruction;
-
-    #[ORM\ManyToOne(targetEntity: Transfert::class, inversedBy: 'productions')]
-    private $transfert;
 
     #[ORM\OneToMany(mappedBy: 'production', targetEntity: Vente::class)]
     private $ventes;
 
     #[ORM\ManyToOne(targetEntity: Produit::class, inversedBy: 'productions')]
+    #[Groups(["read:production:getAllProduction"])]
     private $produit;
+
+    #[ORM\OneToMany(mappedBy: 'Production', targetEntity: Destruction::class)]
+    private Collection $destructions;
+
+    #[ORM\OneToMany(mappedBy: 'Production', targetEntity: Transfert::class)]
+    private Collection $transferts;
+
+    #[ORM\Column]
+    #[Groups(["read:production:getAllProduction"])]
+    private ?bool $congelation = null;
 
     public function __construct()
     {
         $this->ventes = new ArrayCollection();
+        $this->destructions = new ArrayCollection();
+        $this->transferts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -98,24 +112,24 @@ class Production
 
     public function getDateFabrication(): ?\DateTimeInterface
     {
-        return $this->date_fabrication;
+        return $this->dateFabrication;
     }
 
-    public function setDateFabrication(\DateTimeInterface $date_fabrication): self
+    public function setDateFabrication(\DateTimeInterface $dateFabrication): self
     {
-        $this->date_fabrication = $date_fabrication;
+        $this->dateFabrication = $dateFabrication;
 
         return $this;
     }
 
     public function getDatePeremption(): ?\DateTimeInterface
     {
-        return $this->date_peremption;
+        return $this->datePeremption;
     }
 
-    public function setDatePeremption(\DateTimeInterface $date_peremption): self
+    public function setDatePeremption(\DateTimeInterface $datePeremption): self
     {
-        $this->date_peremption = $date_peremption;
+        $this->datePeremption = $datePeremption;
 
         return $this;
     }
@@ -180,30 +194,6 @@ class Production
         return $this;
     }
 
-    public function getDestruction(): ?destruction
-    {
-        return $this->destruction;
-    }
-
-    public function setDestruction(?destruction $destruction): self
-    {
-        $this->destruction = $destruction;
-
-        return $this;
-    }
-
-    public function getTransfert(): ?transfert
-    {
-        return $this->transfert;
-    }
-
-    public function setTransfert(?transfert $transfert): self
-    {
-        $this->transfert = $transfert;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, Vente>
      */
@@ -242,6 +232,90 @@ class Production
     public function setProduit(?produit $produit): self
     {
         $this->produit = $produit;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Destruction>
+     */
+    public function getDestructions(): Collection
+    {
+        return $this->destructions;
+    }
+
+    public function addDestruction(Destruction $destruction): self
+    {
+        if (!$this->destructions->contains($destruction)) {
+            $this->destructions->add($destruction);
+            $destruction->setProduction($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDestruction(Destruction $destruction): self
+    {
+        if ($this->destructions->removeElement($destruction)) {
+            // set the owning side to null (unless already changed)
+            if ($destruction->getProduction() === $this) {
+                $destruction->setProduction(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Transfert>
+     */
+    public function getTransferts(): Collection
+    {
+        return $this->transferts;
+    }
+
+    public function addTransfert(Transfert $transfert): self
+    {
+        if (!$this->transferts->contains($transfert)) {
+            $this->transferts->add($transfert);
+            $transfert->setProduction($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTransfert(Transfert $transfert): self
+    {
+        if ($this->transferts->removeElement($transfert)) {
+            // set the owning side to null (unless already changed)
+            if ($transfert->getProduction() === $this) {
+                $transfert->setProduction(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getPrixParPortion(): ?float
+    {
+        return $this->prixParPortion;
+    }
+
+    public function setPrixParPortion(float $prixParPortion): self
+    {
+        $this->prixParPortion = $prixParPortion;
+
+        return $this;
+    }
+
+    public function isCongelation(): ?bool
+    {
+        return $this->congelation;
+    }
+
+    public function setCongelation(bool $congelation): self
+    {
+        $this->congelation = $congelation;
 
         return $this;
     }

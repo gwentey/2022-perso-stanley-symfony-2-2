@@ -3,15 +3,19 @@
 namespace App\Controller;
 
 use App\Entity\User;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 
 class SecurityController extends AbstractController
 {
+    public function __construct(){        
+    }
+
+
     #[Route('/apip/security', name: 'security')]
     public function security(#[CurrentUser] ?User $user): Response
     {
@@ -24,6 +28,10 @@ class SecurityController extends AbstractController
         return $this->json($user);
     }
 
+
+
+
     #[Route('/apip/logout', name: 'logout')]
     public function logout(){}
+
 }

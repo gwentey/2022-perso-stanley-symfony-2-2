@@ -42,12 +42,12 @@ class Destruction
     #[Groups(["read:destruction:getAllDestruction"])]
     private $prix_unitaire;
 
-    #[ORM\OneToMany(mappedBy: 'destruction', targetEntity: Production::class)]
-    private $productions;
+    #[ORM\ManyToOne(inversedBy: 'destructions')]
+    private ?Production $Production = null;
+
 
     public function __construct()
     {
-        $this->productions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -91,33 +91,16 @@ class Destruction
         return $this;
     }
 
-    /**
-     * @return Collection<int, Production>
-     */
-    public function getProductions(): Collection
+    public function getProduction(): ?Production
     {
-        return $this->productions;
+        return $this->Production;
     }
 
-    public function addProduction(Production $production): self
+    public function setProduction(?Production $Production): self
     {
-        if (!$this->productions->contains($production)) {
-            $this->productions[] = $production;
-            $production->setDestruction($this);
-        }
+        $this->Production = $Production;
 
         return $this;
     }
 
-    public function removeProduction(Production $production): self
-    {
-        if ($this->productions->removeElement($production)) {
-            // set the owning side to null (unless already changed)
-            if ($production->getDestruction() === $this) {
-                $production->setDestruction(null);
-            }
-        }
-
-        return $this;
-    }
 }

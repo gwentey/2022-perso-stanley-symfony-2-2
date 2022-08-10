@@ -46,8 +46,9 @@ class Transfert
     #[ORM\JoinColumn(nullable: false)]
     private $type_transfert;
 
-    #[ORM\OneToMany(mappedBy: 'transfert', targetEntity: Production::class)]
-    private $productions;
+    #[ORM\ManyToOne(inversedBy: 'transferts')]
+    private ?Production $Production = null;
+
 
     public function __construct()
     {
@@ -107,33 +108,17 @@ class Transfert
         return $this;
     }
 
-    /**
-     * @return Collection<int, Production>
-     */
-    public function getProductions(): Collection
+    public function getProduction(): ?Production
     {
-        return $this->productions;
+        return $this->Production;
     }
 
-    public function addProduction(Production $production): self
+    public function setProduction(?Production $Production): self
     {
-        if (!$this->productions->contains($production)) {
-            $this->productions[] = $production;
-            $production->setTransfert($this);
-        }
+        $this->Production = $Production;
 
         return $this;
     }
 
-    public function removeProduction(Production $production): self
-    {
-        if ($this->productions->removeElement($production)) {
-            // set the owning side to null (unless already changed)
-            if ($production->getTransfert() === $this) {
-                $production->setTransfert(null);
-            }
-        }
-
-        return $this;
-    }
+  
 }

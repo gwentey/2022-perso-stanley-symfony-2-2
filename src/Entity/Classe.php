@@ -27,11 +27,11 @@ class Classe
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["read:classe:getAllClasse"])]
+    #[Groups(["read:classe:getAllClasse", "read:production:getAllProduction"])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["read:classe:getAllClasse"])]
+    #[Groups(["read:classe:getAllClasse", "read:production:getAllProduction"])]
     private $nom;
 
     #[ORM\OneToMany(mappedBy: 'classe', targetEntity: Production::class, orphanRemoval: true)]

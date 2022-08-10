@@ -25,11 +25,11 @@ class UniteeProduit
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["read:uniteeProduit:getAllUniteeProduit", "read:produit:getAllProduit"])]
+    #[Groups(["read:uniteeProduit:getAllUniteeProduit", "read:produit:getAllProduit", "read:production:getAllProduction"])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["read:uniteeProduit:getAllUniteeProduit", "read:produit:getAllProduit"])]
+    #[Groups(["read:uniteeProduit:getAllUniteeProduit", "read:produit:getAllProduit", "read:production:getAllProduction"])]
     private $nom;
 
     public function getId(): ?int

@@ -27,24 +27,24 @@ class Produit
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["read:produit:getAllProduit"])]
+    #[Groups(["read:produit:getAllProduit", "read:production:getAllProduction"])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["read:produit:getAllProduit"])]
+    #[Groups(["read:produit:getAllProduit", "read:production:getAllProduction"])]
     private $nom;
 
     #[ORM\Column(type: 'float')]
-    #[Groups(["read:produit:getAllProduit"])]
+    #[Groups(["read:produit:getAllProduit", "read:production:getAllProduction"])]
     private $prix;
 
     #[ORM\ManyToOne(targetEntity: FamilleProduit::class, inversedBy: 'produits')]
-    #[Groups(["read:produit:getAllProduit"])]
+    #[Groups(["read:produit:getAllProduit", "read:production:getAllProduction"])]
     private $famille;
 
     #[ORM\ManyToOne(targetEntity: UniteeProduit::class)]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(["read:produit:getAllProduit"])]
+    #[Groups(["read:produit:getAllProduit", "read:production:getAllProduction"])]
     private $unitee;
 
     #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Production::class)]

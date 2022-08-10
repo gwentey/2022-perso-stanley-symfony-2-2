@@ -26,16 +26,16 @@ class Professeur
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[Groups(["read:professeur:getAllProfesseur"])]
+    #[Groups(["read:professeur:getAllProfesseur", "read:production:getAllProduction"])]
     #[ORM\Column(type: 'integer')]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["read:professeur:getAllProfesseur"])]
+    #[Groups(["read:professeur:getAllProfesseur", "read:production:getAllProduction"])]
     private $nom;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["read:professeur:getAllProfesseur"])]
+    #[Groups(["read:professeur:getAllProfesseur", "read:production:getAllProduction"])]
     private $prenom;
 
     #[ORM\OneToMany(mappedBy: 'professeur', targetEntity: Production::class, orphanRemoval: true)]
