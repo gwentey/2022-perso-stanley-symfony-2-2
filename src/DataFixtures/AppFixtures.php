@@ -127,9 +127,16 @@ class AppFixtures extends Fixture
 
 
         // Création des produits
-        for ($i = 0; $i < 15; $i++) {
+        $lesNomsProduit = array(
+            "Allumettes au foie gras", "Artichauts poivrade", "Asperges en petits pois", "Avocat au saumon",
+            "Avocat au thon", "Avocat aux crevettes sautées", "Bouchées fumées", "Bouchées montagnardes",
+            "Canapés façon bistrot", "Céleris rémoulade", "Crackers", "Salade provencal",
+            "Salade de tomate", "Pomme au four", "Pizza veggie", "Haricot au four"
+        );
+
+        foreach ($lesNomsProduit as $prod) {
             $produit = new Produit;
-            $produit->setNom("Produit " . $i);
+            $produit->setNom($prod);
             $produit->setPrix(random_int(0, 50) / 2);
             $produit->setUnitee($tableauDesUniteesProduit[random_int(0, count($tableauDesUniteesProduit) - 1)]);
             $produit->setFamille($tableauDeFamilleProduit[random_int(0, count($tableauDeFamilleProduit) - 1)]);

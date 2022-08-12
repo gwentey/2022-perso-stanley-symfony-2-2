@@ -50,9 +50,13 @@ class Produit
     #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Production::class)]
     private $productions;
 
+    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: CompositionProduit::class)]
+    private Collection $compositionProduits;
+
     public function __construct()
     {
         $this->productions = new ArrayCollection();
+        $this->compositionProduits = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -132,6 +136,36 @@ class Produit
             // set the owning side to null (unless already changed)
             if ($production->getProduit() === $this) {
                 $production->setProduit(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CompositionProduit>
+     */
+    public function getCompositionProduits(): Collection
+    {
+        return $this->compositionProduits;
+    }
+
+    public function addCompositionProduit(CompositionProduit $compositionProduit): self
+    {
+        if (!$this->compositionProduits->contains($compositionProduit)) {
+            $this->compositionProduits->add($compositionProduit);
+            $compositionProduit->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCompositionProduit(CompositionProduit $compositionProduit): self
+    {
+        if ($this->compositionProduits->removeElement($compositionProduit)) {
+            // set the owning side to null (unless already changed)
+            if ($compositionProduit->getProduit() === $this) {
+                $compositionProduit->setProduit(null);
             }
         }
 
