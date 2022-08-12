@@ -190,6 +190,7 @@ class AppFixtures extends Fixture
         $user->setUsername("admin");
         $user->setNom("Rodrigues");
         $user->setPrenom("Anthony");
+        $user->setProfile(4);
         $user->setPassword($hashedPassword);
 
         $manager->persist($user);
