@@ -6,6 +6,7 @@ use App\Entity\Atelier;
 use App\Entity\CategorieClient;
 use App\Entity\Classe;
 use App\Entity\Client;
+use App\Entity\Composition;
 use App\Entity\FamilleProduit;
 use App\Entity\MoyenDeReglement;
 use App\Entity\Production;
@@ -41,6 +42,7 @@ class AppFixtures extends Fixture
         $tableauDesProductions = [];
         $tableauDesUniteesProduit = [];
         $tableauDesMoyensReglements = [];
+        $tableauDesCompositions = [];
 
 
 
@@ -125,6 +127,63 @@ class AppFixtures extends Fixture
             $manager->persist($unitee);
         }
 
+         // Création des compostions
+         $composition = array(
+            array('nom' => 'Petit sac de transport papier', 'prix' => '0.15'),
+            array('nom' => 'Grand sac de transport papier', 'prix' => '0.25'),
+            array('nom' => 'Charcuterie à cuire à base de porc', 'prix' => '10'),
+            array('nom' => 'Charcuterie cuite : pâté, terrine et galantine de porc', 'prix' => '10'),
+            array('nom' => 'Charcuterie cuite : pâté, terrine et galantine de volaille et lapin', 'prix' => '11'),
+            array('nom' => 'Charcuterie cuite : terrine de poisson et/ou  fruits de mer', 'prix' => '11'),
+            array('nom' => 'Charcuterie cuite : terrine festive', 'prix' => '27'),
+            array('nom' => 'Charcuterie cuite : produits tripiers', 'prix' => '6'),
+            array('nom' => 'Charcuterie cuite : saucisserie', 'prix' => '11'),
+            array('nom' => 'Charcuterie cuite : saucisserie sèche', 'prix' => '8'),
+            array('nom' => 'Entrées froides : poisson fumé', 'prix' => '30'),
+            array('nom' => 'Entrées froides : foie gras de canard', 'prix' => '60'),
+            array('nom' => 'Entrées froides à base de légumes', 'prix' => '1'),
+            array('nom' => 'Entrées froides : poisson froid', 'prix' => '3'),
+            array('nom' => 'Pâtisserie charcutière : quiche simple  et pizza', 'prix' => '1'),
+            array('nom' => 'Pâtisserie charcutière : tourte/quiche prestige', 'prix' => '1.2'),
+            array('nom' => 'Pâtisserie charcutière : crêpes fourrées', 'prix' => '1.5'),
+            array('nom' => 'Pâtisserie charcutière : feuilleté garniture simple', 'prix' => '1'),
+            array('nom' => 'Pâtisserie charcutière : feuilleté garniture plus élaborée', 'prix' => '1.2'),
+            array('nom' => 'Plats cuisinés sans garniture à base de porc, poulet ou dinde', 'prix' => '2'),
+            array('nom' => 'Plats cuisinés sans garniture à base de gibier, canard, lapin, bœuf, veau et agneau(bas morceaux)', 'prix' => '2.1'),
+            array('nom' => 'Plats cuisinés sans garniture à base de morceaux nobles de bœuf , veau et agneau', 'prix' => '2.7'),
+            array('nom' => 'Plats cuisinés sans garniture : poisson en filet ou darne', 'prix' => '2.7'),
+            array('nom' => 'Plats cuisinés sans garniture : poisson en mousseline', 'prix' => '1.5'),
+            array('nom' => 'Garniture à base de féculents', 'prix' => '0.5'),
+            array('nom' => 'Garniture à base de légumes', 'prix' => '0.7'),
+            array('nom' => 'Garniture : gratin', 'prix' => '1'),
+            array('nom' => 'Plat complet traditionnel', 'prix' => '3.5'),
+            array('nom' => 'Plat cuisiné festif', 'prix' => '4.2'),
+            array('nom' => 'Potage à base de légumes', 'prix' => '2'),
+            array('nom' => 'Potage à base de poissons', 'prix' => '3.5'),
+            array('nom' => 'Petits fours : bouchée cocktail salée', 'prix' => '0.5'),
+            array('nom' => 'Petits fours : bouchée cocktail sucrée', 'prix' => '0.5'),
+            array('nom' => 'Pâtisserie simple, un seul appareil', 'prix' => '0.9'),
+            array('nom' => 'Pâtisserie simple, deux appareils', 'prix' => '1'),
+            array('nom' => 'Pâtisserie : gâteau élaboré individuel', 'prix' => '1.8'),
+            array('nom' => ' Pâtisserie : gâteau élaboré, à partager', 'prix' => '1.7'),
+            array('nom' => 'Pâtisserie : entremets pâtissier individuel ou à partager', 'prix' => '2.4'),
+            array('nom' => 'Pâtisserie : tarte sucrée de base', 'prix' => '1'),
+            array('nom' => 'Pâtisserie : tarte sucrée complexe', 'prix' => '1.2'),
+            array('nom' => 'Pâtisserie : biscuits secs', 'prix' => '8'),
+            array('nom' => 'Boulangerie : pain', 'prix' => '2'),
+            array('nom' => 'Boulangerie : viennoiseries', 'prix' => '0.5'),
+            array('nom' => 'Confiserie : chocolats', 'prix' => '20'),
+            array('nom' => 'Confiserie sans chocolat', 'prix' => '10')
+        );
+        foreach ($composition as $com) {
+            $composition = new Composition;
+            $composition->setNom($com['nom']);
+            $composition->setPrix($com['prix']);
+
+            array_push($tableauDesCompositions, $composition);
+            $manager->persist($composition);
+        }
+
 
         // Création des produits
         $lesNomsProduit = array(
@@ -140,9 +199,12 @@ class AppFixtures extends Fixture
             $produit->setPrix(random_int(0, 50) / 2);
             $produit->setUnitee($tableauDesUniteesProduit[random_int(0, count($tableauDesUniteesProduit) - 1)]);
             $produit->setFamille($tableauDeFamilleProduit[random_int(0, count($tableauDeFamilleProduit) - 1)]);
+            $produit->addComposition($tableauDesCompositions[random_int(0, count($tableauDesCompositions) - 1)]);
+            $produit->addComposition($tableauDesCompositions[random_int(0, count($tableauDesCompositions) - 1)]);
             array_push($tableauDesProduits, $produit);
             $manager->persist($produit);
         }
+
 
         // Création des professeurs
         for ($i = 0; $i < 6; $i++) {

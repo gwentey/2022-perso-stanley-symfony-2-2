@@ -50,13 +50,15 @@ class Produit
     #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Production::class)]
     private $productions;
 
-    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: CompositionProduit::class)]
-    private Collection $compositionProduits;
+    #[ORM\ManyToMany(targetEntity: Composition::class, inversedBy: 'produits')]
+    #[Groups(["read:produit:getAllProduit"])]
+    private Collection $composition;
 
     public function __construct()
     {
         $this->productions = new ArrayCollection();
         $this->compositionProduits = new ArrayCollection();
+        $this->composition = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -143,31 +145,25 @@ class Produit
     }
 
     /**
-     * @return Collection<int, CompositionProduit>
+     * @return Collection<int, composition>
      */
-    public function getCompositionProduits(): Collection
+    public function getComposition(): Collection
     {
-        return $this->compositionProduits;
+        return $this->composition;
     }
 
-    public function addCompositionProduit(CompositionProduit $compositionProduit): self
+    public function addComposition(Composition $composition): self
     {
-        if (!$this->compositionProduits->contains($compositionProduit)) {
-            $this->compositionProduits->add($compositionProduit);
-            $compositionProduit->setProduit($this);
+        if (!$this->composition->contains($composition)) {
+            $this->composition->add($composition);
         }
 
         return $this;
     }
 
-    public function removeCompositionProduit(CompositionProduit $compositionProduit): self
+    public function removeComposition(Composition $composition): self
     {
-        if ($this->compositionProduits->removeElement($compositionProduit)) {
-            // set the owning side to null (unless already changed)
-            if ($compositionProduit->getProduit() === $this) {
-                $compositionProduit->setProduit(null);
-            }
-        }
+        $this->composition->removeElement($composition);
 
         return $this;
     }
