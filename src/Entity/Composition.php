@@ -9,27 +9,40 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-
+#[ApiResource(
+    attributes: ["security" => "is_granted('ROLE_USER')"],
+    normalizationContext: ['groups' => ["read:production:getAllProduction"]],
+    itemOperations: [
+        'put',
+        'delete',
+        'get' => [
+            'normalization_context' => ['groups' => ["read:production:getAllProduction"]]
+        ]
+    ]
+)]
 #[ORM\Entity(repositoryClass: CompositionRepository::class)]
-#[ApiResource]
 class Composition
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(["read:produit:getAllProduit"])]
+    #[Groups(["read:produit:getAllProduit", "read:production:getAllProduction"])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(["read:produit:getAllProduit"])]
+    #[Groups(["read:produit:getAllProduit", "read:production:getAllProduction"])]
     private ?string $nom = null;
 
     #[ORM\ManyToMany(targetEntity: Produit::class, mappedBy: 'composition')]
     private Collection $produits;
 
     #[ORM\Column]
-    #[Groups(["read:produit:getAllProduit"])]
+    #[Groups(["read:produit:getAllProduit", "read:production:getAllProduction"])]
     private ?float $prix = null;
+
+    #[ORM\ManyToOne(inversedBy: 'compositions')]
+    #[Groups(["read:produit:getAllProduit", "read:production:getAllProduction"])]
+    private UniteeProduit $unitee;
 
     public function __construct()
     {
@@ -88,6 +101,18 @@ class Composition
     public function setPrix(float $prix): self
     {
         $this->prix = $prix;
+
+        return $this;
+    }
+
+    public function getUnitee(): ?UniteeProduit
+    {
+        return $this->unitee;
+    }
+
+    public function setUnitee(?UniteeProduit $unitee): self
+    {
+        $this->unitee = $unitee;
 
         return $this;
     }

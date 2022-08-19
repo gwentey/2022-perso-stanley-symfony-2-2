@@ -15,6 +15,7 @@ use App\Entity\Professeur;
 use App\Entity\TypeTransfert;
 use App\Entity\UniteeProduit;
 use App\Entity\User;
+use App\Repository\UniteeProduitRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -23,10 +24,12 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 class AppFixtures extends Fixture
 {
     private $passwordHasher;
+    private $uniteeProduitRepository;
 
-    public function __construct(UserPasswordHasherInterface $passwordHasher)
+    public function __construct(UserPasswordHasherInterface $passwordHasher, UniteeProduitRepository $uniteeProduitRepository)
     {
         $this->passwordHasher = $passwordHasher;
+        $this->uniteeProduitRepository = $uniteeProduitRepository; 
     }
     public function load(ObjectManager $manager): void
     {
@@ -125,60 +128,65 @@ class AppFixtures extends Fixture
             $unitee->setNom($uni);
             array_push($tableauDesUniteesProduit, $unitee);
             $manager->persist($unitee);
+            $manager->flush();
+
         }
 
          // Création des compostions
          $composition = array(
-            array('nom' => 'Petit sac de transport papier', 'prix' => '0.15'),
-            array('nom' => 'Grand sac de transport papier', 'prix' => '0.25'),
-            array('nom' => 'Charcuterie à cuire à base de porc', 'prix' => '10'),
-            array('nom' => 'Charcuterie cuite : pâté, terrine et galantine de porc', 'prix' => '10'),
-            array('nom' => 'Charcuterie cuite : pâté, terrine et galantine de volaille et lapin', 'prix' => '11'),
-            array('nom' => 'Charcuterie cuite : terrine de poisson et/ou  fruits de mer', 'prix' => '11'),
-            array('nom' => 'Charcuterie cuite : terrine festive', 'prix' => '27'),
-            array('nom' => 'Charcuterie cuite : produits tripiers', 'prix' => '6'),
-            array('nom' => 'Charcuterie cuite : saucisserie', 'prix' => '11'),
-            array('nom' => 'Charcuterie cuite : saucisserie sèche', 'prix' => '8'),
-            array('nom' => 'Entrées froides : poisson fumé', 'prix' => '30'),
-            array('nom' => 'Entrées froides : foie gras de canard', 'prix' => '60'),
-            array('nom' => 'Entrées froides à base de légumes', 'prix' => '1'),
-            array('nom' => 'Entrées froides : poisson froid', 'prix' => '3'),
-            array('nom' => 'Pâtisserie charcutière : quiche simple  et pizza', 'prix' => '1'),
-            array('nom' => 'Pâtisserie charcutière : tourte/quiche prestige', 'prix' => '1.2'),
-            array('nom' => 'Pâtisserie charcutière : crêpes fourrées', 'prix' => '1.5'),
-            array('nom' => 'Pâtisserie charcutière : feuilleté garniture simple', 'prix' => '1'),
-            array('nom' => 'Pâtisserie charcutière : feuilleté garniture plus élaborée', 'prix' => '1.2'),
-            array('nom' => 'Plats cuisinés sans garniture à base de porc, poulet ou dinde', 'prix' => '2'),
-            array('nom' => 'Plats cuisinés sans garniture à base de gibier, canard, lapin, bœuf, veau et agneau(bas morceaux)', 'prix' => '2.1'),
-            array('nom' => 'Plats cuisinés sans garniture à base de morceaux nobles de bœuf , veau et agneau', 'prix' => '2.7'),
-            array('nom' => 'Plats cuisinés sans garniture : poisson en filet ou darne', 'prix' => '2.7'),
-            array('nom' => 'Plats cuisinés sans garniture : poisson en mousseline', 'prix' => '1.5'),
-            array('nom' => 'Garniture à base de féculents', 'prix' => '0.5'),
-            array('nom' => 'Garniture à base de légumes', 'prix' => '0.7'),
-            array('nom' => 'Garniture : gratin', 'prix' => '1'),
-            array('nom' => 'Plat complet traditionnel', 'prix' => '3.5'),
-            array('nom' => 'Plat cuisiné festif', 'prix' => '4.2'),
-            array('nom' => 'Potage à base de légumes', 'prix' => '2'),
-            array('nom' => 'Potage à base de poissons', 'prix' => '3.5'),
-            array('nom' => 'Petits fours : bouchée cocktail salée', 'prix' => '0.5'),
-            array('nom' => 'Petits fours : bouchée cocktail sucrée', 'prix' => '0.5'),
-            array('nom' => 'Pâtisserie simple, un seul appareil', 'prix' => '0.9'),
-            array('nom' => 'Pâtisserie simple, deux appareils', 'prix' => '1'),
-            array('nom' => 'Pâtisserie : gâteau élaboré individuel', 'prix' => '1.8'),
-            array('nom' => ' Pâtisserie : gâteau élaboré, à partager', 'prix' => '1.7'),
-            array('nom' => 'Pâtisserie : entremets pâtissier individuel ou à partager', 'prix' => '2.4'),
-            array('nom' => 'Pâtisserie : tarte sucrée de base', 'prix' => '1'),
-            array('nom' => 'Pâtisserie : tarte sucrée complexe', 'prix' => '1.2'),
-            array('nom' => 'Pâtisserie : biscuits secs', 'prix' => '8'),
-            array('nom' => 'Boulangerie : pain', 'prix' => '2'),
-            array('nom' => 'Boulangerie : viennoiseries', 'prix' => '0.5'),
-            array('nom' => 'Confiserie : chocolats', 'prix' => '20'),
-            array('nom' => 'Confiserie sans chocolat', 'prix' => '10')
+            array('nom' => 'Petit sac de transport papier', 'prix' => '0.15', 'unitee'=> 'Portion'),
+            array('nom' => 'Grand sac de transport papier', 'prix' => '0.25', 'unitee'=> 'Portion'),
+            array('nom' => 'Charcuterie à cuire à base de porc', 'prix' => '10', 'unitee'=> 'Pièce'),
+            array('nom' => 'Charcuterie cuite : pâté, terrine et galantine de porc', 'prix' => '10', 'unitee'=> 'Pièce'),
+            array('nom' => 'Charcuterie cuite : pâté, terrine et galantine de volaille et lapin', 'prix' => '11', 'unitee'=> 'Pièce'),
+            array('nom' => 'Charcuterie cuite : terrine de poisson et/ou fruits de mer', 'prix' => '11', 'unitee'=> 'Pièce'),
+            array('nom' => 'Charcuterie cuite : terrine festive', 'prix' => '27','unitee'=> 'Pièce'),
+            array('nom' => 'Charcuterie cuite : produits tripiers', 'prix' => '6','unitee'=> 'Pièce'),
+            array('nom' => 'Charcuterie cuite : saucisserie', 'prix' => '11','unitee'=> 'Pièce'),
+            array('nom' => 'Charcuterie cuite : saucisserie sèche', 'prix' => '8','unitee'=> 'Pièce'),
+            array('nom' => 'Entrées froides : poisson fumé', 'prix' => '30','unitee'=> 'Pièce'),
+            array('nom' => 'Entrées froides : foie gras de canard', 'prix' => '60','unitee'=> 'Pièce'),
+            array('nom' => 'Entrées froides à base de légumes', 'prix' => '1','unitee'=> 'Kg'),
+            array('nom' => 'Entrées froides : poisson froid', 'prix' => '3','unitee'=> 'Kg'),
+            array('nom' => 'Pâtisserie charcutière : quiche simple et pizza', 'prix' => '1','unitee'=> 'Kg'),
+            array('nom' => 'Pâtisserie charcutière : tourte/quiche prestige', 'prix' => '1.2','unitee'=> 'Kg'),
+            array('nom' => 'Pâtisserie charcutière : crêpes fourrées', 'prix' => '1.5','unitee'=> 'Kg'),
+            array('nom' => 'Pâtisserie charcutière : feuilleté garniture simple', 'prix' => '1','unitee'=> 'Kg'),
+            array('nom' => 'Pâtisserie charcutière : feuilleté garniture plus élaborée', 'prix' => '1.2','unitee'=> 'Kg'),
+            array('nom' => 'Plats cuisinés sans garniture à base de porc, poulet ou dinde', 'prix' => '2','unitee'=> 'Kg'),
+            array('nom' => 'Plats cuisinés sans garniture à base de gibier, canard, lapin, bœuf, veau et agneau(bas morceaux)', 'prix' => '2.1','unitee'=> 'Kg'),
+            array('nom' => 'Plats cuisinés sans garniture à base de morceaux nobles de bœuf , veau et agneau', 'prix' => '2.7','unitee'=> 'Kg'),
+            array('nom' => 'Plats cuisinés sans garniture : poisson en filet ou darne', 'prix' => '2.7','unitee'=> 'Kg'),
+            array('nom' => 'Plats cuisinés sans garniture : poisson en mousseline', 'prix' => '1.5','unitee'=> 'Kg'),
+            array('nom' => 'Garniture à base de féculents', 'prix' => '0.5','unitee'=> 'Kg'),
+            array('nom' => 'Garniture à base de légumes', 'prix' => '0.7','unitee'=> 'Kg'),
+            array('nom' => 'Garniture : gratin', 'prix' => '1','unitee'=> 'Kg'),
+            array('nom' => 'Plat complet traditionnel', 'prix' => '3.5','unitee'=> 'Kg'),
+            array('nom' => 'Plat cuisiné festif', 'prix' => '4.2','unitee'=> 'Kg'),
+            array('nom' => 'Potage à base de légumes', 'prix' => '2','unitee'=> 'Litre'),
+            array('nom' => 'Potage à base de poissons', 'prix' => '3.5','unitee'=> 'Litre'),
+            array('nom' => 'Petits fours : bouchée cocktail salée', 'prix' => '0.5','unitee'=> 'Portion'),
+            array('nom' => 'Petits fours : bouchée cocktail sucrée', 'prix' => '0.5','unitee'=> 'Portion'),
+            array('nom' => 'Pâtisserie simple, un seul appareil', 'prix' => '0.9','unitee'=> 'Kg'),
+            array('nom' => 'Pâtisserie simple, deux appareils', 'prix' => '1','unitee'=> 'Kg'),
+            array('nom' => 'Pâtisserie : gâteau élaboré individuel', 'prix' => '1.8','unitee'=> 'Kg'),
+            array('nom' => 'Pâtisserie : gâteau élaboré, à partager', 'prix' => '1.7','unitee'=> 'Kg'),
+            array('nom' => 'Pâtisserie : entremets pâtissier individuel ou à partager', 'prix' => '2.4','unitee'=> 'Kg'),
+            array('nom' => 'Pâtisserie : tarte sucrée de base', 'prix' => '1','unitee'=> 'Kg'),
+            array('nom' => 'Pâtisserie : tarte sucrée complexe', 'prix' => '1.2','unitee'=> 'Kg'),
+            array('nom' => 'Pâtisserie : biscuits secs', 'prix' => '8','unitee'=> 'Pièce'),
+            array('nom' => 'Boulangerie : pain', 'prix' => '2','unitee'=> 'Kg'),
+            array('nom' => 'Boulangerie : viennoiseries', 'prix' => '0.5','unitee'=> 'Kg'),
+            array('nom' => 'Confiserie : chocolats', 'prix' => '20','unitee'=> 'Pièce'),
+            array('nom' => 'Confiserie sans chocolat', 'prix' => '10','unitee'=> 'Pièce')
         );
         foreach ($composition as $com) {
             $composition = new Composition;
             $composition->setNom($com['nom']);
             $composition->setPrix($com['prix']);
+
+            $unitee = $this->uniteeProduitRepository->findOneBy(["nom" => $com['unitee']]);
+            $composition->setUnitee($unitee);
 
             array_push($tableauDesCompositions, $composition);
             $manager->persist($composition);
